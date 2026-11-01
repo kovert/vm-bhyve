@@ -66,7 +66,7 @@ Options (create):
     -i <interface>  Interface to attach to the switch
     -m <size>       MTU size of the switch
     -a <address>    IP address (CIDR notation) assigned to bridge interface
-    -b <bridge>     Specify an existing bridge when creating a manual switch
+    -b <bridge>     Use an existing bridge for a manual or vlanfilter switch
     -p              Create a private switch
 
 Options (address):
@@ -405,4 +405,3 @@ Options:
 "
 
 #------------------------------------------------------------------------------
-

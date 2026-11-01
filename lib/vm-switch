@@ -164,7 +164,10 @@ switch::remove(){
         config::core::remove "switch_list" "${_switch}"
         config::core::remove "ports_${_switch} vlan_${_switch} nat_${_switch} type_${_switch}"
         config::core::remove "addr_${_switch} addr6_${_switch} private_${_switch} mtu_${_switch}"
-        config::core::remove "vlanfilter_tagged_${_switch}" "vlanfilter_untagged_${_switch}"
+        config::core::remove "vlanfilter_tagged_${_switch} vlanfilter_untagged_${_switch}"
+        if [ "${_type}" = "vlanfilter" ]; then
+            config::core::remove "bridge_${_switch} preexisting_${_switch}"
+        fi
     else
         util::err "failed to remove virtual switch"
     fi
@@ -392,6 +395,7 @@ switch::id(){
         vale)     switch::vale::id "${_var}" "${_switch}" ;;
         netgraph) switch::netgraph::id "${_var}" "${_switch}" ;;
         manual)   switch::manual::id "${_var}" "${_switch}" ;;
+        vlanfilter) switch::vlanfilter::id "${_var}" "${_switch}" ;;
         *)        switch::standard::id "${_var}" "${_switch}" ;;
     esac
 }

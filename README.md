@@ -185,6 +185,38 @@ You can view current switch configuration using the list command:
 
     # vm switch list
 
+### VLAN-filtering switches with an existing bridge
+
+On FreeBSD 15.0 or later, you can use an existing bridge as a VLAN-filtering
+switch:
+
+    # vm switch create -t vlanfilter -b bridge0 fabric
+
+This enables VLAN filtering and brings the bridge up without changing its name
+or MAC address. Existing bridge members and their VLAN settings are preserved.
+Configure uplinks yourself, and ensure the bridge exists before vm-bhyve
+initializes its switches at boot.
+The bridge is added to the `vm-switch` group and tagged with the switch's
+`viid-...@` group for discovery. After upgrading, run `vm init` to register
+previously imported bridges.
+
+To attach a guest to VLAN 100 as an untagged access port, add these settings to
+its configuration:
+
+    network0_type="virtio-net"
+    network0_switch="fabric"
+    network0_vlan_untagged="100"
+
+For a guest that handles VLAN tags itself, use `network0_vlan_tagged="100,200"`
+instead. Start the guest normally with `vm start <guest>`.
+
+The bridge name and `preexisting_fabric="yes"` marker are stored in the core
+configuration. Running `vm switch destroy fabric` removes the vm-bhyve switch
+configuration and its per-switch discovery tag but leaves the imported bridge,
+its members, and its VLAN settings
+intact. It does not undo VLAN filtering. Without `-b`, vm-bhyve creates and owns
+the bridge and destroys it when the switch is removed.
+
 ## Creating virtual machines
 
 Use one of the following command to create a new virtual machine:

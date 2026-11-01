@@ -535,12 +535,13 @@ However, it may not contain a dash at the beginning or end.
 Note that the maximum length of a switch name is also limited to
 12 characters, due to the way we use this as the interface name.
 .Pp
-There are currently 4 types of virtual switch that can be created.
+There are currently 6 types of virtual switch that can be created.
 These are
 .Sy standard ,
 .Sy manual ,
 .Sy netgraph ,
-.Sy vale
+.Sy vale ,
+.Sy vlanfilter
 and
 .Sy vxlan .
 The default type is
@@ -557,6 +558,10 @@ guests.
 .Sy vale
 switches use the netmap VALE system to create a virtual switch connecting
 guests.
+.Sy vlanfilter
+switches use a VLAN-filtering bridge and require
+.Fx 15.0
+or later.
 .Sy vxlan
 allows you to create virtual LANs (similar to a VLAN) which tunnel L2 guest
 traffic over L3.
@@ -582,10 +587,20 @@ and
 switches.
 This option is required for vxlan switches.
 .It Fl b Ar bridge
-If creating a manual switch using an existing bridge on your system, this
-option allows
-you to specify the name of the bridge interface you would like to use.
+Specify an existing bridge interface for a
+.Sy manual
+or
+.Sy vlanfilter
+switch.
 This option is required for manual switches.
+For vlanfilter switches, it is optional; without it a new bridge is created.
+An imported vlanfilter bridge is brought up with VLAN filtering enabled,
+but its name and MAC address are preserved.
+The bridge is registered using the vm-switch and per-switch VIID interface groups.
+The bridge must already exist when the switch is initialized at boot.
+It is recorded as preexisting and neither the bridge nor its members are
+removed when the virtual switch is destroyed.
+Only the per-switch VIID group and virtual switch configuration are removed.
 .It Fl m Ar mtu
 Specify an mtu to use for the bridge interface.
 .It Fl a Ar address
