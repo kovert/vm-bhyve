@@ -207,7 +207,7 @@ switch::vlanfilter::address(){
     local _delete="$4"
     local _curr _curr6
 
-    #util::err "assigning ip address to vlanfilter switch is not supported"
+    util::err "assigning IP address to vlanfilter switch is not supported yet"
 
     # validate vlan id
     if [ -n "${_vlan}" ]; then
