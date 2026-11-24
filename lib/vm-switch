@@ -458,8 +458,8 @@ switch::provision(){
         vale)       switch::vale::provision ;;
         netgraph)   switch::netgraph::provision ;;
         vlanfilter) switch::vlanfilter::provision ;;
+        manual)     switch::manual::provision ;;
         standard)   ;&
-        manual)     ;&
         vxlan)      switch::standard::provision ;;
         *)          util::warn "unable to configure interface ${_num}" ;;
     esac

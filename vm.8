@@ -1547,6 +1547,24 @@ Set this option to
 to instruct vm-bhyve to add the virtual network interface to the switch as a
 span port on the bridge.
 The default is to add the port to the switch as an ordinary bridge member.
+.It network0_vlan_untagged
+Specify the untagged VLAN for this interface, for example
+.Sy network0_vlan_untagged="50" .
+Supported on vlanfilter and manual switches.
+For a manual switch, the existing bridge must have VLAN filtering enabled
+by the user, for example through
+.Pa /etc/rc.conf .
+.It network0_vlan_tagged
+Specify the tagged VLAN list for this interface, for example
+.Sy network0_vlan_tagged="51"
+or
+.Sy network0_vlan_tagged="51,52" .
+Supported on vlanfilter and manual switches.
+The same bridge requirement as
+.Sy network0_vlan_untagged
+applies.
+If neither VLAN option is set, manual switches retain their normal
+tap provisioning behavior without configuring VLANs.
 .It disk0_type
 The emulation type for the first virtual disk.
 At least one virtual disk is required.

@@ -118,3 +118,21 @@ switch::manual::vlan(){
 switch::manual::id(){
     config::core::get "$1" "bridge_$2"
 }
+
+# create a tap interface for a guest on a user-managed bridge
+#
+# @modifies _func _devices
+# @return 1 if we don't get a tap device
+#
+switch::manual::provision(){
+    local _tagged _untagged
+
+    config::get "_untagged" "network${_num}_vlan_untagged"
+    config::get "_tagged" "network${_num}_vlan_tagged"
+
+    if [ -n "${_untagged}" ] || [ -n "${_tagged}" ]; then
+        switch::vlanfilter::provision
+    else
+        switch::standard::provision
+    fi
+}
